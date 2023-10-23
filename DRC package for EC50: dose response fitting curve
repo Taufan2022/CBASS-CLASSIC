@@ -1,0 +1,28 @@
+#DRC package for EC50: dose response fitting curve
+install.packages("drc")
+library(drc)
+install.packages("MASS")
+library("MASS")
+install.packages("drm")
+install.packages("car")
+#subset data based on organism
+PAM
+algaefittinglong= datafittinglong[which(datafittinglong$Organism=='Algae'),]
+algae.m2=drm(PAM~Temperature, data = algaefittinglong, fct = LL.3())
+algae.m2
+plot(algae.m2, type = "all", log = "", xlim = c(29,45), ylim = c(0,1))
+ED(algae.m2, c(50))
+summary(algae.m2)
+compParm(DRCpam, 'ed50')
+
+coral = datafittinglong[which(datafittinglong$Organism=='Coral'),]
+coral
+coral.m2 = drm(PAM~Temperature, data=coral, fct = LL.3())
+plot(coral.m2, type = "all", log = "", xlim = c(29,45), ylim = c(0,1))
+ED(coral.m2, c(50))
+summary(coral.m2)
+
+#Plot two at the same one
+multi.m2 = drm(PAM~Temperature, data=datafittinglong, Organism, fct = LL.3())
+plot(multi.m2, type = "all", log = "", xlim = c(29,45), ylim = c(0,1),col = TRUE, pch = c(19,18))
+ED(multi.m2, c(50))
